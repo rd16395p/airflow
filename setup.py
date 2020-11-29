@@ -182,7 +182,7 @@ atlas = [
     'atlasclient>=0.1.2',
 ]
 aws = [
-    'boto3~=1.10,<1.16',
+    'boto3~=1.10,<1.11',  # required by snowflake
 ]
 azure_blob_storage = [
     'azure-storage>=0.34.0, <0.37.0',
@@ -208,8 +208,8 @@ cassandra = [
     'cassandra-driver>=3.13.0,<3.21.0',
 ]
 celery = [
-    'celery~=4.3',
-    'celery==4.4.0;python_version<"3.0"',
+    'celery~=4.3;python_version>="3.0"',
+    'celery==4.3.1;python_version<"3.0"',
     'flower>=0.7.3, <1.0',
     'kombu==4.6.3;python_version<"3.0"',
     'tornado>=4.2.0, <6.0',  # Dep of flower. Pin to a version that works on Py3.5.2
@@ -224,7 +224,8 @@ cloudant = [
 crypto = [
     # Cryptography 3.2 for python 2.7 is broken
     # https://github.com/pyca/cryptography/issues/5359#issuecomment-727622403
-    'cryptography>=0.9.3,<3.2; python_version<"3.0"',
+    # Snowflake requires <3.0
+    'cryptography>=0.9.3,<3.0; python_version<"3.0"',
     'cryptography>=0.9.3;python_version>="3.0"',
 ]
 dask = [
@@ -262,7 +263,8 @@ flask_oauth = [
     'requests-oauthlib==1.1.0',
 ]
 gcp = [
-    'PyOpenSSL',
+    'PyOpenSSL<20.0.0;python_version<"3.0"',
+    'PyOpenSSL;python_version>="3.0"',
     'google-api-python-client>=1.6.0, <2.0.0',
     'google-auth>=1.0.0, <2.0.0',
     'google-auth-httplib2>=0.0.1',
@@ -426,6 +428,8 @@ devel = [
     'click==6.7',
     'contextdecorator;python_version<"3.4"',
     'coverage',
+    'docutils>=0.14, <0.16; python_version<"3.0"',
+    'docutils;python_version>="3.0"',
     'ecdsa<0.15',  # Required for moto 1.3.14
     'flake8>=3.6.0',
     'flake8-colors',
@@ -445,11 +449,12 @@ devel = [
     'paramiko',
     'pipdeptree',
     'pre-commit',
+    'pyrsistent<=0.16.0;python_version<"3.0"',
+    'pyrsistent;python_version>="3.0"',
     'pysftp',
     'pytest<6.0.0',  # FIXME: pylint complaining for pytest.mark.* on v6.0
     'pytest-cov',
     'pytest-instafail',
-    'pytest-rerunfailures',
     'pytest-timeouts',
     'pywinrm',
     'qds-sdk>=1.9.6',
@@ -597,6 +602,8 @@ INSTALL_REQUIREMENTS = [
     'colorlog==4.0.2',
     'configparser>=3.5.0, <3.6.0',
     'croniter>=0.3.17, <0.4',
+    'cryptography>=0.9.3,<3.0; python_version<"3.0"',  # required by snowflake
+    'cryptography>=0.9.3;python_version>="3.0"',
     'dill>=0.2.2, <0.4',
     'email-validator',
     'enum34~=1.1.6;python_version<"3.4"',
@@ -632,14 +639,16 @@ INSTALL_REQUIREMENTS = [
     'python-dateutil>=2.3, <3',
     'python-nvd3~=0.15.0',
     'python-slugify>=3.0.0,<5.0',
-    'requests>=2.20.0, <2.24.0',  # Required to keep snowflake happy
+    'requests>=2.20.0, <2.23.0;python_version<"3.0"',  # Required to keep snowflake happy
+    'requests>=2.20.0, <2.24.0;python_version>="3.0"',  # Required to keep snowflake happy
     'setproctitle>=1.1.8, <2',
     'sqlalchemy~=1.3',
     'sqlalchemy_jsonfield==0.8.0;python_version<"3.5"',
     'sqlalchemy_jsonfield~=0.9;python_version>="3.5"',
     'tabulate>=0.7.5, <0.9',
     'tenacity==4.12.0',
-    'thrift>=0.9.2',
+    'thrift>=0.9.2;python_version>="3.0"',
+    'thrift==0.9.3;python_version<"3.0"',  # required by thrifts_sasl for python 2.0
     'typing;python_version<"3.5"',
     'typing-extensions>=3.7.4;python_version<"3.8"',
     'tzlocal>=1.4,<2.0.0',
