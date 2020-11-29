@@ -182,11 +182,12 @@ atlas = [
     'atlasclient>=0.1.2',
 ]
 aws = [
-    'boto3~=1.10',
+    'boto3~=1.10,<1.16',
 ]
 azure_blob_storage = [
     'azure-storage>=0.34.0, <0.37.0',
-    'azure-storage-blob<12.0',
+    'azure-storage-blob',
+    'azure-storage-common',
 ]
 azure_container_instances = [
     'azure-mgmt-containerinstance>=1.5.0,<2'
@@ -336,7 +337,9 @@ papermill = [
     'papermill[all]>=1.0.0',
     'nteract-scrapbook[all]>=0.2.1',
     'pyarrow<1.0.0',
-    'fsspec<0.8.0;python_version=="3.5"'
+    'fsspec<0.8.0;python_version=="3.5"',
+    'black==20.8b0;python_version>="3.6"'  # we need to limit black version as we have click < 7
+
 ]
 password = [
     'bcrypt>=2.0.0',
@@ -355,7 +358,7 @@ qds = [
     'qds-sdk>=1.10.4',
 ]
 rabbitmq = [
-    'amqp',
+    'amqp<5.0.0',
 ]
 redis = [
     'redis~=3.2',
@@ -378,6 +381,7 @@ sentry = [
 ]
 slack = [
     'slackclient>=1.0.0,<2.0.0',
+    'websocket-client<0.55.0'
 ]
 snowflake = [
     'snowflake-connector-python>=1.5.2',
@@ -421,11 +425,13 @@ devel = [
     'click==6.7',
     'contextdecorator;python_version<"3.4"',
     'coverage',
+    'ecdsa<0.15',  # Required for moto 1.3.14
     'flake8>=3.6.0',
     'flake8-colors',
     'flaky',
     'freezegun',
     'gitpython',
+    'idna<2.9',  # Required for moto 1.3.14
     'importlib-metadata~=2.0; python_version<"3.8"',
     'ipdb',
     'jira',
@@ -436,6 +442,7 @@ devel = [
     'packaging',
     'parameterized',
     'paramiko',
+    'pipdeptree',
     'pre-commit',
     'pysftp',
     'pytest<6.0.0',  # FIXME: pylint complaining for pytest.mark.* on v6.0
@@ -443,7 +450,6 @@ devel = [
     'pytest-instafail',
     'pytest-rerunfailures',
     'pytest-timeouts',
-    'pytest-xdist',
     'pywinrm',
     'qds-sdk>=1.9.6',
     'requests_mock',
@@ -606,11 +612,12 @@ INSTALL_REQUIREMENTS = [
     'graphviz>=0.12',
     'gunicorn>=19.5.0, <21.0',
     'importlib-metadata~=2.0; python_version<"3.8"',
+    'importlib_resources~=1.4',
     'iso8601>=0.1.12',
     'jinja2>=2.10.1, <2.12.0',
     'json-merge-patch==0.2',
     'jsonschema~=3.0',
-    'lazy_object_proxy~=1.3',
+    'lazy_object_proxy<1.5.0',  # Required to keep pip-check happy with astroid
     'markdown>=2.5.2, <3.0',
     'marshmallow-sqlalchemy>=0.16.1, <0.24.0;python_version>="3.6"',
     'marshmallow-sqlalchemy>=0.16.1, <0.19.0;python_version<"3.6"',
@@ -624,7 +631,7 @@ INSTALL_REQUIREMENTS = [
     'python-dateutil>=2.3, <3',
     'python-nvd3~=0.15.0',
     'python-slugify>=3.0.0,<5.0',
-    'requests>=2.20.0, <3',
+    'requests>=2.20.0, <2.24.0',  # Required to keep snowflake happy
     'setproctitle>=1.1.8, <2',
     'sqlalchemy~=1.3',
     'sqlalchemy_jsonfield==0.8.0;python_version<"3.5"',
